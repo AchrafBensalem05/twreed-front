@@ -9,7 +9,7 @@ export function SidebarNav({ className, items, ...props }) {
   return (
     <nav
       className={cn(
-        "w-full md:w-[200px]  border-r p-4 rounded-lg shadow-sm",
+        "w-full md:w-[200px]  border-r p-4 rounded-lg shadow-xs",
         className
       )}
       {...props}

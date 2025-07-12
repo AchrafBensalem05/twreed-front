@@ -55,7 +55,7 @@ export function SimilarProducts() {
             key={product.id}
             className="w-full bg-white rounded-lg overflow-hidden"
           >
-            <div className="bg-[#0B1A27] aspect-[4/3] relative">
+            <div className="bg-[#0B1A27] aspect-4/3 relative">
               <Image
                 src={product.image}
                 alt={product.title}

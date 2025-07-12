@@ -13,8 +13,8 @@ function Services() {
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
           {categories.map((category, index) => (
             <Card key={index} className="overflow-hidden cursor-pointer">
-              <CardContent className="p-0 relative aspect-[3/4] ">
-                <div className="absolute inset-0 bg-gradient-to-t from-transparent to-black/30  z-10 "></div>
+              <CardContent className="p-0 relative aspect-3/4 ">
+                <div className="absolute inset-0 bg-linear-to-t from-transparent to-black/30  z-10 "></div>
                 <Image
                   src={category.image}
                   alt={category.title}
@@ -22,7 +22,7 @@ function Services() {
                   className="object-cover z-0 "
                 />
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent" />
                 <div className="absolute top-4 left-4 text-white z-20">
                   <h3 className="font-medium text-md my-1 z-20">
                     {category.descreption}
@@ -59,7 +59,7 @@ function Services() {
           {services.map((service, index) => (
             <Card key={index} className="text-white border-none cursor-pointer">
               <CardContent className="p-0">
-                <div className="aspect-[4/3] relative">
+                <div className="aspect-4/3 relative">
                   <Image
                     src={service.image}
                     alt={`Service by ${service.name}`}

@@ -108,7 +108,7 @@ export function StoreInformationForm({ onNext }) {
                 <FormItem>
                   <FormLabel>Store URL</FormLabel>
                   <FormControl>
-                    <div className="flex rounded-md shadow-sm">
+                    <div className="flex rounded-md shadow-xs">
                       <span className="flex select-none items-center px-3 text-gray-500 bg-gray-100 rounded-l-md border border-r-0">
                         www.
                       </span>

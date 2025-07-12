@@ -39,7 +39,7 @@ export function ImageUpload({ images, onChange, className, variant = "grid" }) {
           onClick={() => fileInputRef.current && fileInputRef.current.click()}
         >
           {images[0] ? (
-            <div className="relative aspect-[3/1] w-full">
+            <div className="relative aspect-3/1 w-full">
               <img
                 src={images[0] || "/placeholder.svg"}
                 alt="Uploaded"
@@ -51,7 +51,7 @@ export function ImageUpload({ images, onChange, className, variant = "grid" }) {
                   e.stopPropagation();
                   onChange([]);
                 }}
-                className="absolute top-2 right-2 w-6 h-6 bg-white rounded-full flex items-center justify-center shadow-sm"
+                className="absolute top-2 right-2 w-6 h-6 bg-white rounded-full flex items-center justify-center shadow-xs"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -91,7 +91,7 @@ export function ImageUpload({ images, onChange, className, variant = "grid" }) {
           <button
             type="button"
             onClick={() => removeImage(index)}
-            className="absolute top-2 right-2 w-6 h-6 bg-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-sm"
+            className="absolute top-2 right-2 w-6 h-6 bg-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-xs"
           >
             <X className="w-4 h-4" />
           </button>

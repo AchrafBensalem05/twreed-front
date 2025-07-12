@@ -159,7 +159,7 @@ export default function ProductPage() {
                   {colorVariants.map((variant) => (
                     <div
                       key={variant.id}
-                      className="w-10 h-10 cursor-pointer active:scale-110 focus:border-2 focus:border-orange-500 border rounded-lg overflow-hidden flex-shrink-0"
+                      className="w-10 h-10 cursor-pointer active:scale-110 focus:border-2 focus:border-orange-500 border rounded-lg overflow-hidden shrink-0"
                     >
                       <Image
                         src={variant.img}

@@ -30,7 +30,7 @@ export default function VRImageSlider() {
   return (
     <div className="relative max-w-5xl mx-auto max-h-[300px]">
       {/* Main image container */}
-      <div className="relative aspect-[1/1] w-full overflow-hidden rounded-lg bg-gray-100">
+      <div className="relative aspect-square w-full overflow-hidden rounded-lg bg-gray-100">
         <Image
           src={images[currentIndex]}
           alt={`Slide ${currentIndex + 1}`}

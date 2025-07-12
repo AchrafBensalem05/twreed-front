@@ -106,7 +106,7 @@ export default function page() {
             <div className="grid grid-cols-3 gap-4">
               {products.map((product, index) => (
                 <div key={index} className="bg-white p-4 rounded">
-                     <div className="bg-[#0B1A27] aspect-[4/3] relative">
+                     <div className="bg-[#0B1A27] aspect-4/3 relative">
                                   <Image
                                     src={"/slide1.jpg"}
                                     alt={"slide"}

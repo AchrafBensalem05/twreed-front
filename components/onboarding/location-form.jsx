@@ -96,7 +96,7 @@ export function LocationForm({ onNext, onPrevious }) {
                   initialLng={form.getValues("longitude")}
                   initialLat={form.getValues("latitude")}
                 />
-                <div className="absolute top-2 right-2 bg-white rounded-md shadow-sm">
+                <div className="absolute top-2 right-2 bg-white rounded-md shadow-xs">
                   <Button variant="ghost" size="icon">
                     <Search className="h-4 w-4" />
                   </Button>
