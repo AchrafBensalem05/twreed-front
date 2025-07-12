@@ -34,3 +34,123 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+```
+twreed-front
+├─ app
+│  ├─ atelier
+│  │  └─ page.jsx
+│  ├─ dashboard
+│  │  └─ onboarding
+│  │     └─ page.jsx
+│  ├─ favicon.ico
+│  ├─ globals.css
+│  ├─ layout.jsx
+│  ├─ page.jsx
+│  ├─ product
+│  │  └─ [id]
+│  │     └─ page.jsx
+│  ├─ profile
+│  │  └─ [id]
+│  │     └─ page.jsx
+│  ├─ settings
+│  │  ├─ layout.jsx
+│  │  ├─ page.jsx
+│  │  └─ security
+│  │     └─ page.jsx
+│  └─ signup
+│     └─ page.jsx
+├─ components
+│  ├─ allProducts.jsx
+│  ├─ atelierPage.jsx
+│  ├─ ateliersItems.jsx
+│  ├─ breadCump.jsx
+│  ├─ categories.jsx
+│  ├─ categoryGrid.jsx
+│  ├─ companyList.jsx
+│  ├─ featureCard.jsx
+│  ├─ hero.jsx
+│  ├─ imageSlideVr.jsx
+│  ├─ mobile-nav.jsx
+│  ├─ navbar.jsx
+│  ├─ navbarVtwo.jsx
+│  ├─ newProducts.jsx
+│  ├─ onboarding
+│  │  ├─ add-product-form.jsx
+│  │  ├─ image-upload.jsx
+│  │  ├─ location-form.jsx
+│  │  ├─ map-component.jsx
+│  │  ├─ multi-step-layout.jsx
+│  │  ├─ shipping-form.jsx
+│  │  └─ store-information-form.jsx
+│  ├─ productDescreption.jsx
+│  ├─ productDetails.jsx
+│  ├─ productPage.jsx
+│  ├─ productsCard.jsx
+│  ├─ profileHeader.jsx
+│  ├─ seller.jsx
+│  ├─ sellerToggle.jsx
+│  ├─ services.jsx
+│  ├─ servicesCard.jsx
+│  ├─ sidebar-nav.jsx
+│  ├─ signup-sidebar.jsx
+│  ├─ similarProducts.jsx
+│  ├─ steps
+│  │  ├─ auth-method-step.jsx
+│  │  ├─ auth-steps.jsx
+│  │  ├─ company-size-step.jsx
+│  │  ├─ email-auth-step.jsx
+│  │  ├─ email-verification-step.jsx
+│  │  ├─ purpose-step.jsx
+│  │  └─ username-step.jsx
+│  ├─ trustedSellerCard.jsx
+│  └─ ui
+│     ├─ avatar.jsx
+│     ├─ badge.jsx
+│     ├─ breadcrumb.jsx
+│     ├─ button.jsx
+│     ├─ card.jsx
+│     ├─ checkbox.jsx
+│     ├─ dropdown-menu.jsx
+│     ├─ form.jsx
+│     ├─ input-otp.jsx
+│     ├─ input.jsx
+│     ├─ label.jsx
+│     ├─ multi-select.jsx
+│     ├─ navigation-menu.jsx
+│     ├─ select.jsx
+│     ├─ sheet.jsx
+│     ├─ switch.jsx
+│     ├─ tabs.jsx
+│     ├─ textarea.jsx
+│     └─ toggle.jsx
+├─ components.json
+├─ contexts
+│  ├─ form-context.jsx
+│  └─ signup-form-context.jsx
+├─ jsconfig.json
+├─ lib
+│  ├─ constants
+│  │  └─ index.js
+│  └─ utils.js
+├─ next.config.mjs
+├─ package-lock.json
+├─ package.json
+├─ postcss.config.mjs
+├─ public
+│  ├─ file.svg
+│  ├─ globe.svg
+│  ├─ kazi.png
+│  ├─ mystro.png
+│  ├─ next.svg
+│  ├─ norh.png
+│  ├─ slide1.jpg
+│  ├─ slide2.png
+│  ├─ vercel.svg
+│  ├─ window.svg
+│  ├─ yalidine.png
+│  └─ zrexpress.jpg
+├─ README.md
+└─ tailwind.config.mjs
+
+```
