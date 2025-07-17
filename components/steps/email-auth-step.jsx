@@ -5,16 +5,28 @@ import { Input } from "@/components/ui/input"
 import { useSignupForm } from "@/contexts/signup-form-context"
 import { ArrowLeft } from "lucide-react"
 import { useState } from "react"
+import { sendEmailConfirmation } from "@/app/actions/auth";
 
 export function EmailAuthStep() {
   const { data, setFormData, nextStep, prevStep } = useSignupForm()
   const [email, setEmail] = useState(data.email)
   const [password, setPassword] = useState(data.password)
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     setFormData({ email, password })
-    nextStep()
+    setError("");
+    setLoading(true);
+    try {
+      await sendEmailConfirmation({ email, password });
+      nextStep();
+    } catch (err) {
+      setError(err?.message || "Registration failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -37,8 +49,9 @@ export function EmailAuthStep() {
             required
           />
         </div>
-        <Button type="submit" className="w-full bg-orange-500 hover:bg-orange-600">
-          Continue
+        {error && <div className="text-red-500 text-sm">{error}</div>}
+        <Button type="submit" className="w-full bg-orange-500 hover:bg-orange-600" disabled={loading}>
+          {loading ? "Submitting..." : "Continue"}
         </Button>
       </form>
     </div>

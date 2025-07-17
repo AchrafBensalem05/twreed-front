@@ -18,7 +18,8 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { validateEmailConfirmation, sendEmailConfirmation } from "@/app/actions/auth";
 
 const FormSchema = z.object({
   otp: z.string().min(6, {
@@ -28,6 +29,10 @@ const FormSchema = z.object({
 
 export function EmailVerificationStep() {
   const { data, setFormData, nextStep, prevStep, resetEmail } = useSignupForm();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [resendLoading, setResendLoading] = useState(false);
+  const [resendMessage, setResendMessage] = useState("");
 
   const form = useForm({
     resolver: zodResolver(FormSchema),
@@ -36,9 +41,18 @@ export function EmailVerificationStep() {
     },
   });
 
-  function onSubmit(formData) {
+  async function onSubmit(formData) {
     setFormData({ otp: formData.otp });
-    nextStep();
+    setError("");
+    setLoading(true);
+    try {
+      await validateEmailConfirmation({ email: data.email, otp: formData.otp });
+      nextStep();
+    } catch (err) {
+      setError(err?.message || "Invalid code. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -108,18 +122,33 @@ export function EmailVerificationStep() {
           <Button
             type="submit"
             className="w-full bg-orange-500 hover:bg-orange-600"
-            disabled={!form.watch("otp") || form.watch("otp").length !== 6}
+            disabled={loading || !form.watch("otp") || form.watch("otp").length !== 6}
           >
-            Submit
+            {loading ? "Verifying..." : "Submit"}
           </Button>
+          {error && <div className="text-red-500 text-sm mt-2">{error}</div>}
         </form>
       </Form>
       <button
         type="button"
         className="text-sm text-muted-foreground hover:text-foreground"
+        onClick={async () => {
+          setResendLoading(true);
+          setResendMessage("");
+          try {
+            await sendEmailConfirmation({ email: data.email });
+            setResendMessage("A new code has been sent to your email.");
+          } catch (err) {
+            setResendMessage(err?.message || "Failed to resend code.");
+          } finally {
+            setResendLoading(false);
+          }
+        }}
+        disabled={resendLoading}
       >
-        Resend code
+        {resendLoading ? "Resending..." : "Resend code"}
       </button>
+      {resendMessage && <div className="text-green-600 text-xs mt-2">{resendMessage}</div>}
     </div>
   );
 }

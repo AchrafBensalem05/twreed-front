@@ -22,22 +22,20 @@ export function UsernameStep() {
       <div className="space-y-2">
         <h2 className="text-2xl font-bold">Get your profile started</h2>
         <p className="text-sm text-muted-foreground">
-          Add a username that's unique to you, this is how you'll appear to others. You can't change your username, so
-          choose wisely.
+          Add your name and company name. Your name is how you'll appear to others. You can't change your name, so choose wisely.
         </p>
       </div>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-2">
-          <label className="text-sm font-medium">Choose a username</label>
+          <label className="text-sm font-medium">Your Name</label>
           <Input
-            placeholder="john_smith"
-            value={data.username}
-            onChange={(e) => setFormData({ username: e.target.value })}
+            placeholder="John Smith"
+            value={data.name}
+            onChange={(e) => setFormData({ name: e.target.value })}
           />
-          <p className="text-xs text-muted-foreground">Build trust by using your full name or business name</p>
         </div>
         <Button type="submit" className="w-full bg-orange-500 hover:bg-orange-600">
-          Create my account
+          Continue
         </Button>
       </form>
     </div>

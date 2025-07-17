@@ -3,6 +3,9 @@
 import { Button } from "@/components/ui/button";
 import { useSignupForm } from "@/contexts/signup-form-context";
 import { ArrowLeft, Building, Building2, Home, Users } from "lucide-react";
+import { useState } from "react";
+import { registerUser } from "@/app/actions/auth";
+import { Input } from "@/components/ui/input";
 
 const COMPANY_SIZES = [
   { value: "just-me", label: "Just me", icon: Home },
@@ -14,11 +17,60 @@ const COMPANY_SIZES = [
 
 export function CompanySizeStep() {
   const { data, setFormData, prevStep } = useSignupForm();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [selectedSize, setSelectedSize] = useState(data.companySize || null);
+  const [companyName, setCompanyName] = useState(data.companyName || "");
 
-  const handleSubmit = (size) => {
+  const handleSelect = (size) => {
+    setSelectedSize(size);
     setFormData({ companySize: size });
-    
-    console.log("Form submitted:", { ...data, companySize: size });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+    try {
+      const payload = {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        password_confirmation: data.password,
+        role: data.role,
+      };
+      if (data.role === "seller") {
+        payload.company_name = companyName;
+        payload.company_size = selectedSize;
+      }
+      await registerUser(payload);
+      // Optionally, show a success message or redirect here
+    } catch (err) {
+      setError(err?.message || "Registration failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSkip = async () => {
+    setError("");
+    setLoading(true);
+    try {
+      await registerUser({
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        password_confirmation: data.password,
+        role: data.role,
+        company_name: data.companyName,
+        company_size: null,
+      });
+      // Optionally, show a success message or redirect here
+    } catch (err) {
+      setError(err?.message || "Registration failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -28,21 +80,34 @@ export function CompanySizeStep() {
           <ArrowLeft className="h-4 w-4" />
           Back
         </Button>
-        <Button variant="ghost" onClick={() => handleSubmit(null)}>
-          Skip
-        </Button>
       </div>
       <div className="space-y-2">
         <h2 className="text-2xl font-bold">How many people work at your company?</h2>
       </div>
+      {data.role === "seller" && (
+        <div className="space-y-2">
+          <label className="text-sm font-medium">Company Name</label>
+          <Input
+            placeholder="Acme Inc."
+            value={companyName}
+            onChange={(e) => {
+              setCompanyName(e.target.value);
+              setFormData({ companyName: e.target.value });
+            }}
+            required
+          />
+        </div>
+      )}
       <div className="grid grid-cols-3 sm:grid-cols-5 gap-4">
         {COMPANY_SIZES.map(({ value, label, icon: Icon }) => (
           <button
             key={value}
             className={`p-4 border rounded-lg text-center space-y-2 hover:border-orange-500 transition-colors ${
-              data.companySize === value ? "border-orange-500" : ""
+              selectedSize === value ? "border-orange-500 bg-orange-50" : ""
             }`}
-            onClick={() => handleSubmit(value)}
+            onClick={() => handleSelect(value)}
+            disabled={loading}
+            type="button"
           >
             <div className="mx-auto w-12 h-12 flex items-center justify-center">
               <Icon className="w-8 h-8" />
@@ -51,7 +116,14 @@ export function CompanySizeStep() {
           </button>
         ))}
       </div>
-      <p className="text-xs text-red-500 text-right">If selected turns to finish</p>
+      {error && <div className="text-red-500 text-sm mt-2">{error}</div>}
+      {selectedSize && (
+        <form onSubmit={handleSubmit} className="mt-6">
+          <Button type="submit" className="w-full bg-orange-500 hover:bg-orange-600" disabled={loading || (data.role === 'seller' && !companyName)}>
+            {loading ? "Submitting..." : "Submit"}
+          </Button>
+        </form>
+      )}
     </div>
   );
 }

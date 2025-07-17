@@ -9,9 +9,13 @@ const STEPS = ["auth-method", "email-auth", "email-verification", "username", "p
 const initialFormData = {
   email: "",
   password: "",
+  password_confirmation: "",
   username: "",
+  name: "",
+  companyName: "",
   accountType: null,
   companySize: null,
+  role: null,
   otp: "",
 };
 
