@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useSignupForm } from "@/contexts/signup-form-context"
 import { Apple, Facebook } from "lucide-react"
+import Link from "next/link"
 
 export function AuthStep() {
   const { data, setFormData, nextStep } = useSignupForm()
@@ -19,9 +20,9 @@ export function AuthStep() {
         <h2 className="text-2xl font-bold">Create a new account</h2>
         <p className="text-sm text-muted-foreground">
           Already have an account?{" "}
-          <a href="#" className="text-orange-500">
-            Sign in
-          </a>
+          <Link href="/signup" className="text-orange-500">
+            Sign up
+          </Link>
         </p>
       </div>
       <div className="grid gap-2">
