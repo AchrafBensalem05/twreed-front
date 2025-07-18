@@ -31,7 +31,7 @@ export default function SettingsLayout({ children }) {
       {/* Navbar */}
       <NavbarVtwo />
 
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1">
         {/* Sidebar */}
         <aside className="hidden md:flex shrink-0 border-r bg-white">
           <SidebarNav items={sidebarNavItems} className="py-6 px-4" />

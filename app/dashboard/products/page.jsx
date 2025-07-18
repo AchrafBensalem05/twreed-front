@@ -1,3 +1,5 @@
+import { getAllBrands } from "@/app/actions/brands"
+import { getAllCategories } from "@/app/actions/categories"
 import { getMyProducts } from "@/app/actions/products"
 import { AddProductForm } from "@/components/onboarding/add-product-form"
 import { FormProvider } from "@/contexts/form-context"
@@ -7,9 +9,11 @@ export default async function ProductsPage({ searchParams }) {
 		const params = await searchParams
 		const query = new URLSearchParams(params).toString()
 		const res = await getMyProducts({ query })
-
 		return res
 	}
+
+	const categoriesPromise = getAllCategories()
+	const brandsPromise = getAllBrands()
 
 	const { data: products } = await getProducts()
 
@@ -19,7 +23,7 @@ export default async function ProductsPage({ searchParams }) {
 
 			{products.length === 0 ? (
 				<FormProvider>
-					<AddProductForm />
+					<AddProductForm brandsPromise={brandsPromise} categoriesPromise={categoriesPromise} />
 				</FormProvider>
 			) : (
 				<ul className="space-y-2">
