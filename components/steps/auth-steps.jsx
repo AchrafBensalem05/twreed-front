@@ -5,13 +5,34 @@ import { Input } from "@/components/ui/input"
 import { useSignupForm } from "@/contexts/signup-form-context"
 import { Apple, Facebook } from "lucide-react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
 
 export function AuthStep() {
   const { data, setFormData, nextStep } = useSignupForm()
+  const router = useRouter()
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    nextStep()
+    setError("")
+    setLoading(true)
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: data.email, password: data.password }),
+      })
+      const result = await res.json()
+      if (!res.ok) throw new Error(result.message || "Login failed.")
+      // Optionally: set user/token in context here
+      router.push("/") // Change to your desired route
+    } catch (err) {
+      setError(err?.message || "Login failed. Please try again.")
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -77,8 +98,9 @@ export function AuthStep() {
           value={data.password}
           onChange={(e) => setFormData({ password: e.target.value })}
         />
-        <Button type="submit" className="w-full bg-orange-500 hover:bg-orange-600">
-          Continue
+        {error && <div className="text-red-500 text-sm">{error}</div>}
+        <Button type="submit" className="w-full bg-orange-500 hover:bg-orange-600" disabled={loading}>
+          {loading ? "Logging in..." : "Continue"}
         </Button>
       </form>
     </div>
