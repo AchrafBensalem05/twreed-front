@@ -5,12 +5,13 @@ import { useSignupForm } from "@/contexts/signup-form-context"
 import { ArrowLeft } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
 import { useState } from "react";
-import { registerUser } from "@/app/actions/auth";
+import { useAuth } from '@/hooks/useAuth';
 
 export function PurposeStep() {
   const { data, setFormData, nextStep, prevStep } = useSignupForm();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const { setUser, setToken } = useAuth();
 
   const handleRole = (role) => {
     setFormData({ role });
@@ -24,15 +25,24 @@ export function PurposeStep() {
     setError("");
     setLoading(true);
     try {
-      await registerUser({
+      const payload = {
         name: data.name,
         email: data.email,
         password: data.password,
         password_confirmation: data.password,
         role: "client",
-        company_name: data.companyName,
+        company_name: null,
         company_size: null,
+      };
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
       });
+      const result = await res.json();
+      if (!res.ok) throw new Error(result.message || 'Registration failed.');
+      setUser(result.user || null);
+      setToken(result.token || null);
       // Optionally, show a success message or redirect here
     } catch (err) {
       setError(err?.message || "Registration failed. Please try again.");
@@ -55,9 +65,8 @@ export function PurposeStep() {
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
         <button
-          className={`p-6 border rounded-lg text-left space-y-4 hover:border-orange-500 transition-colors ${
-            data.role === "client" ? "border-orange-500" : ""
-          }`}
+          className={`p-6 border rounded-lg text-left space-y-4 hover:border-orange-500 transition-colors ${data.role === "client" ? "border-orange-500" : ""
+            }`}
           onClick={() => handleRole("client")}
           disabled={loading}
         >
@@ -71,9 +80,8 @@ export function PurposeStep() {
           </div>
         </button>
         <button
-          className={`p-6 border rounded-lg text-left space-y-4 hover:border-orange-500 transition-colors ${
-            data.role === "seller" ? "border-orange-500" : ""
-          }`}
+          className={`p-6 border rounded-lg text-left space-y-4 hover:border-orange-500 transition-colors ${data.role === "seller" ? "border-orange-500" : ""
+            }`}
           onClick={() => handleRole("seller")}
           disabled={loading}
         >

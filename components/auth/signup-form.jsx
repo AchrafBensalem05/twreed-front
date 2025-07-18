@@ -8,6 +8,8 @@ import { Input } from "@/components/ui/input";
 import { SignupSidebar } from "@/components/signup-sidebar";
 import { useSignupForm } from "@/contexts/signup-form-context";
 import { Checkbox } from "../ui/checkbox";
+import { EmailVerificationStep } from "../steps/email-verification-step";
+import { useAuth } from '@/hooks/useAuth';
 
 const COMPANY_SIZES = [
   { value: "just-me", label: "Just me" },
@@ -29,8 +31,7 @@ export default function SignupForm({ onSuccess }) {
     company_name: "",
     company_size: "",
   });
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
+  const { setUser, setToken } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [otp, setOtp] = useState("");
@@ -42,7 +43,7 @@ export default function SignupForm({ onSuccess }) {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleRoleChange = (e,role) => {
+  const handleRoleChange = (e, role) => {
     e.preventDefault();
     console.log("Switching role to:", role);
     setForm((prev) => ({ ...prev, role: role, company_name: "", company_size: "" }));
@@ -64,28 +65,19 @@ export default function SignupForm({ onSuccess }) {
         payload.company_name = form.company_name;
         payload.company_size = form.company_size;
       }
-      const res = await registerUser(payload);
-      setUser(res.user || null);
-      setToken(res.token || null);
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Registration failed.');
+      setUser(data.user || null);
+      setToken(data.token || null);
       goToStep("email-verification");
       setSuccess("");
     } catch (err) {
       setError(err?.message || "Registration failed. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleVerify = async (e) => {
-    e.preventDefault();
-    setOtpError("");
-    setLoading(true);
-    try {
-      await validateEmailConfirmation({ email: form.email, otp });
-      setSuccess("Account verified! You can now sign in.");
-      if (onSuccess) onSuccess();
-    } catch (err) {
-      setOtpError(err?.message || "Invalid code. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -133,12 +125,11 @@ export default function SignupForm({ onSuccess }) {
             />
             <div className="grid gap-4 sm:grid-cols-2">
               <div
-                className={`p-6 border rounded-lg text-left space-y-4 hover:border-orange-500 transition-colors ${form.role === "client" ? "border-orange-500" : ""
+                className={`p-6 border rounded-lg flex flex-col items-center justify-center space-y-4 hover:border-orange-500 transition-colors ${form.role === "client" ? "border-orange-500" : ""
                   }`}
-                onClick={(e) => handleRoleChange(e,"client")}
+                onClick={(e) => handleRoleChange(e, "client")}
               >
                 <div className="relative">
-                  <Checkbox checked={form.role === "client"} className="absolute top-1 right-1 h-4 w-4" />
                   <div className="w-16 h-16 bg-slate-900 rounded-lg" />
                 </div>
                 <div>
@@ -146,12 +137,11 @@ export default function SignupForm({ onSuccess }) {
                 </div>
               </div>
               <div
-                className={`p-6 border rounded-lg text-left space-y-4 hover:border-orange-500 transition-colors ${form.role === "seller" ? "border-orange-500" : ""
+                className={`p-6 border rounded-lg flex flex-col items-center justify-center space-y-4 hover:border-orange-500 transition-colors ${form.role === "seller" ? "border-orange-500" : ""
                   }`}
-                onClick={(e) => handleRoleChange(e,"seller")}
+                onClick={(e) => handleRoleChange(e, "seller")}
               >
                 <div className="relative">
-                  <Checkbox checked={form.role === "seller"} className="absolute top-1 right-1 h-4 w-4" />
                   <div className="w-16 h-16 bg-slate-900 rounded-lg" />
                 </div>
                 <div>
@@ -191,22 +181,7 @@ export default function SignupForm({ onSuccess }) {
           </form>
         )}
         {currentStep === "email-verification" && (
-          <form onSubmit={handleVerify} className="space-y-4 w-full max-w-md p-8 rounded">
-            <h2 className="text-2xl font-bold mb-4">Verify your email</h2>
-            <Input
-              name="otp"
-              placeholder="Enter verification code"
-              value={otp}
-              onChange={(e) => setOtp(e.target.value)}
-              required
-              maxLength={6}
-            />
-            {otpError && <div className="text-red-500 text-sm mt-2">{otpError}</div>}
-            {success && <div className="text-green-600 text-sm mt-2">{success}</div>}
-            <Button type="submit" className="w-full bg-orange-500 hover:bg-orange-600" disabled={loading}>
-              {loading ? "Verifying..." : "Verify"}
-            </Button>
-          </form>
+          <EmailVerificationStep />
         )}
       </main>
     </div>

@@ -21,13 +21,15 @@ export async function sendEmailConfirmation({ email }) {
   // Send confirmation email
   return  await customFetch('/send-confirmation-code', {
     method: 'POST',
+    withAuth: true,
     body: { email },
   });
 }
 
 export async function validateEmailConfirmation({ email, otp }) {
-  return await customFetch('/verify-code', {
+  return await customFetch('/auth/verify-code', {
     method: 'POST',
+    withAuth: true,
     body: { email, code: otp },
   });
 }

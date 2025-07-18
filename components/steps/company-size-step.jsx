@@ -43,28 +43,15 @@ export function CompanySizeStep() {
         payload.company_name = companyName;
         payload.company_size = selectedSize;
       }
-      await registerUser(payload);
-      // Optionally, show a success message or redirect here
-    } catch (err) {
-      setError(err?.message || "Registration failed. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleSkip = async () => {
-    setError("");
-    setLoading(true);
-    try {
-      await registerUser({
-        name: data.name,
-        email: data.email,
-        password: data.password,
-        password_confirmation: data.password,
-        role: data.role,
-        company_name: data.companyName,
-        company_size: null,
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
       });
+      const result = await res.json();
+      if (!res.ok) throw new Error(result.message || 'Registration failed.');
+      setUser(result.user || null);
+      setToken(result.token || null);
       // Optionally, show a success message or redirect here
     } catch (err) {
       setError(err?.message || "Registration failed. Please try again.");
@@ -102,9 +89,8 @@ export function CompanySizeStep() {
         {COMPANY_SIZES.map(({ value, label, icon: Icon }) => (
           <button
             key={value}
-            className={`p-4 border rounded-lg text-center space-y-2 hover:border-orange-500 transition-colors ${
-              selectedSize === value ? "border-orange-500 bg-orange-50" : ""
-            }`}
+            className={`p-4 border rounded-lg text-center space-y-2 hover:border-orange-500 transition-colors ${selectedSize === value ? "border-orange-500 bg-orange-50" : ""
+              }`}
             onClick={() => handleSelect(value)}
             disabled={loading}
             type="button"
