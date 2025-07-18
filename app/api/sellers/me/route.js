@@ -4,12 +4,10 @@ import { customFetch } from '@/lib/fetch'
 import { NextResponse } from 'next/server'
 
 export async function GET() {
-  const token = cookies().get('token')?.value
   try {
     const seller = await customFetch('/sellers/me', {
       method: 'GET',
       withAuth: true,
-      token,
     })
     return NextResponse.json(seller)
   } catch (error) {
@@ -18,14 +16,12 @@ export async function GET() {
 }
 
 export async function PUT(req) {
-  const token = cookies().get('token')?.value
   const data = await req.json()
   try {
     const seller = await customFetch('/sellers/me', {
       method: 'PUT',
       body: data,
       withAuth: true,
-      token,
     })
     return NextResponse.json(seller)
   } catch (error) {

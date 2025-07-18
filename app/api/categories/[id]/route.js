@@ -1,6 +1,5 @@
 // app/api/categories/[id]/route.js
 import { customFetch } from '@/lib/fetch'
-import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 
 export async function GET(_, { params }) {
@@ -15,7 +14,6 @@ export async function GET(_, { params }) {
 }
 
 export async function PUT(req, { params }) {
-  const token = cookies().get('token')?.value
   const data = await req.json()
 
   try {
@@ -23,7 +21,6 @@ export async function PUT(req, { params }) {
       method: 'PUT',
       body: data,
       withAuth: true,
-      token,
     })
     return NextResponse.json(category)
   } catch (error) {
@@ -32,13 +29,11 @@ export async function PUT(req, { params }) {
 }
 
 export async function DELETE(_, { params }) {
-  const token = cookies().get('token')?.value
 
   try {
     await customFetch(`/categories/${params.id}`, {
       method: 'DELETE',
       withAuth: true,
-      token,
     })
     return NextResponse.json({ success: true })
   } catch (error) {

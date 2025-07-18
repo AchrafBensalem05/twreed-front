@@ -8,13 +8,13 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 const steps = [
   {
     id: 1,
-    name: "Add First Product",
-    icon: Package,
+    name: "Seller Information",
+    icon: Store,
   },
   {
     id: 2,
-    name: "Seller Information",
-    icon: Store,
+    name: "Add First Product",
+    icon: Package,
   },
   {
     id: 3,

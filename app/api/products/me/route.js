@@ -16,20 +16,3 @@ export async function GET(req) {
     return NextResponse.json({ message: error.message }, { status: error.status || 500 })
   }
 }
-
-export async function POST(req) {
-  const data = await req.json()
-  const token = cookies().get('token')?.value
-
-  try {
-    const product = await customFetch('/products', {
-      method: 'POST',
-      body: data,
-      withAuth: true,
-    })
-    return NextResponse.json(product)
-  } catch (error) {
-    return NextResponse.json({ message: error.message }, { status: error.status || 500 })
-  }
-}
-

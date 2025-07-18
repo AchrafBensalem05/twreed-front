@@ -1,10 +1,8 @@
 // app/api/orders/cart/add/route.js
-import { cookies } from 'next/headers'
 import { customFetch } from '@/lib/fetch'
 import { NextResponse } from 'next/server'
 
 export async function POST(req) {
-  const token = cookies().get('token')?.value
   const body = await req.json()
 
   try {
@@ -12,7 +10,6 @@ export async function POST(req) {
       method: 'POST',
       body,
       withAuth: true,
-      token,
     })
     return NextResponse.json(result)
   } catch (error) {
