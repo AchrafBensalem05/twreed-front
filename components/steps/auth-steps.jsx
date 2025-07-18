@@ -7,12 +7,14 @@ import { Apple, Facebook } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
+import { useAuth } from "@/hooks/useAuth"
 
 export function AuthStep() {
   const { data, setFormData, nextStep } = useSignupForm()
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+  const { setUser } = useAuth()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -26,7 +28,7 @@ export function AuthStep() {
       })
       const result = await res.json()
       if (!res.ok) throw new Error(result.message || "Login failed.")
-      // Optionally: set user/token in context here
+      setUser(result.user || null)
       router.push("/") // Change to your desired route
     } catch (err) {
       setError(err?.message || "Login failed. Please try again.")

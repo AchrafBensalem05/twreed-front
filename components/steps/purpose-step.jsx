@@ -11,7 +11,7 @@ export function PurposeStep() {
   const { data, setFormData, nextStep, prevStep } = useSignupForm();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const { setUser, setToken } = useAuth();
+  const { setUser } = useAuth();
 
   const handleRole = (role) => {
     setFormData({ role });
@@ -42,7 +42,6 @@ export function PurposeStep() {
       const result = await res.json();
       if (!res.ok) throw new Error(result.message || 'Registration failed.');
       setUser(result.user || null);
-      setToken(result.token || null);
       // Optionally, show a success message or redirect here
     } catch (err) {
       setError(err?.message || "Registration failed. Please try again.");

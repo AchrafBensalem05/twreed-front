@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { useSignupForm } from "@/contexts/signup-form-context";
 import { ArrowLeft, Building, Building2, Home, Users } from "lucide-react";
 import { useState } from "react";
-import { registerUser } from "@/app/actions/auth";
 import { Input } from "@/components/ui/input";
+import { useAuth } from "@/hooks/useAuth"
 
 const COMPANY_SIZES = [
   { value: "just-me", label: "Just me", icon: Home },
@@ -21,6 +21,7 @@ export function CompanySizeStep() {
   const [error, setError] = useState("");
   const [selectedSize, setSelectedSize] = useState(data.companySize || null);
   const [companyName, setCompanyName] = useState(data.companyName || "");
+  const { setUser } = useAuth()
 
   const handleSelect = (size) => {
     setSelectedSize(size);
@@ -51,7 +52,6 @@ export function CompanySizeStep() {
       const result = await res.json();
       if (!res.ok) throw new Error(result.message || 'Registration failed.');
       setUser(result.user || null);
-      setToken(result.token || null);
       // Optionally, show a success message or redirect here
     } catch (err) {
       setError(err?.message || "Registration failed. Please try again.");

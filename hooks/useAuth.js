@@ -1,18 +1,14 @@
 import { useAtom } from 'jotai';
-import { userAtom, tokenAtom } from '@/atoms/auth';
+import { userAtom } from '@/atoms/auth';
 
 /**
- * Custom hook to access and update authentication state (user and token)
+ * Custom hook to access and update authentication state (user)
  */
 export function useAuth() {
   const [user, setUser] = useAtom(userAtom);
-  const [token, setToken] = useAtom(tokenAtom);
 
   return {
     user,
     setUser,
-    token,
-    setToken,
-    isAuthenticated: Boolean(token),
   };
 } 

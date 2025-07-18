@@ -2,12 +2,10 @@
 
 import { useState } from "react";
 import { AuthMethodStep } from "@/components/steps/auth-method-step";
-import { registerUser, validateEmailConfirmation } from "@/app/actions/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SignupSidebar } from "@/components/signup-sidebar";
 import { useSignupForm } from "@/contexts/signup-form-context";
-import { Checkbox } from "../ui/checkbox";
 import { EmailVerificationStep } from "../steps/email-verification-step";
 import { useAuth } from '@/hooks/useAuth';
 
@@ -31,7 +29,7 @@ export default function SignupForm({ onSuccess }) {
     company_name: "",
     company_size: "",
   });
-  const { setUser, setToken } = useAuth();
+  const { setUser } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [otp, setOtp] = useState("");
@@ -73,7 +71,6 @@ export default function SignupForm({ onSuccess }) {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Registration failed.');
       setUser(data.user || null);
-      setToken(data.token || null);
       goToStep("email-verification");
       setSuccess("");
     } catch (err) {
