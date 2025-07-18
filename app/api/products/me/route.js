@@ -7,10 +7,12 @@ export async function GET(req) {
   const query = Object.fromEntries(searchParams.entries())
 
   try {
-    const products = await customFetch('/products', {
+    const products = await customFetch('/products/me', {
       method: 'GET',
+      withAuth:true,
       query,
     })
+    console.log(products)
     return NextResponse.json(products)
   } catch (error) {
     return NextResponse.json({ message: error.message }, { status: error.status || 500 })

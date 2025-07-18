@@ -14,7 +14,7 @@ const dashboardNavItems = [
 
 export default function DashboardLayout({ children }) {
     return (
-        <div className="flex flex-col h-screen container mx-auto">
+        <div className="flex flex-col h-screen container mx-auto overflow-hidden">
             {/* Navbar */}
             <Navbar />
 
