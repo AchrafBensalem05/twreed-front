@@ -1,6 +1,7 @@
 // app/api/auth/login/route.js
 import { NextResponse } from 'next/server'
 import { customFetch } from '@/lib/fetch'
+import { cookies } from 'next/headers'
 
 export async function POST(req) {
   try {
@@ -14,12 +15,14 @@ export async function POST(req) {
     const res = NextResponse.json(response)
 
     if (response?.token) {
-      res.cookies.set('token', response.token, {
+      const cookieStore = await cookies()
+      cookieStore.set("token", response.token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        path: '/',
-        maxAge: 60 * 60 * 24 * 7, // 1 week
-      })
+        secure: true,
+        sameSite: "lax",
+        path: "/",
+        maxAge: 60 * 60 * 24 * 7, // 7 days
+      });
     }
 
     return res

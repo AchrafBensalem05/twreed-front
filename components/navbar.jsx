@@ -66,7 +66,7 @@ const Navbar = () => {
 						<Link href="#">Get the App</Link>
 					</Button>
 					<Button asChild className="rounded-full bg-primary text-white hover:bg-[#ff5a13]">
-						<Link href="/signup">Login</Link>
+						<Link href="/signin">Login</Link>
 					</Button>
 				</div>
 			</div>

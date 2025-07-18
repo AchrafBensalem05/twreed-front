@@ -16,10 +16,14 @@ export async function POST() {
     const res = NextResponse.json({ success: true })
 
     // Clear the cookie
-    res.cookies.set('token', '', {
-      path: '/',
-      maxAge: 0,
-    })
+    const cookieStore = await cookies()
+    cookieStore.set("token", '', {
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+    });
 
     return res
   } catch (error) {

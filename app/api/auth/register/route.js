@@ -16,12 +16,14 @@ export async function POST(req) {
 
     // Set HttpOnly cookie
     const res = NextResponse.json({ user: response.user });
-    res.cookies.set('token', response.token, {
+    const cookieStore = await cookies()
+    console.log(response.token)
+    cookieStore.set("token", response.token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      path: '/',
-      maxAge: 60 * 60 * 24 * 7, // 1 week
+      secure: true,
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 7, // 7 days
     });
     return res;
   } catch (error) {

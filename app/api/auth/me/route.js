@@ -2,7 +2,7 @@ import { cookies } from 'next/headers';
 import { customFetch } from '@/lib/fetch';
 
 export async function GET() {
-  const token = cookies().get('auth_token')?.value;
+  const token = cookies().get('token')?.value;
   if (!token) {
     return Response.json({ error: 'Unauthenticated' }, { status: 401 });
   }
