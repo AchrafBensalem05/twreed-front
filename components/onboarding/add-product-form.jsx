@@ -9,10 +9,11 @@ import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import  MultiSelect  from "../ui/multi-select"
 import { useFormContext } from "@/contexts/form-context"
 import { use } from "react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
+import { MultiSelect } from "../ui/multi-select"
+import { FileUpload } from "../file-upload"
 
 const formSchema = z.object({
 	productName: z.string().min(2, {
@@ -83,59 +84,7 @@ export function AddProductForm({ onNext, onPrevious, brandsPromise, categoriesPr
 
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-					<FormField
-						control={form.control}
-						name="images"
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Product pictures</FormLabel>
-								<div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-									{field.value.map((image, index) => (
-										<div key={index} className="aspect-square bg-[#1a2e35] rounded-lg relative group">
-											<img
-												src={
-													image ||
-													"https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Capture%20d%E2%80%99%C3%A9cran%202025-02-03%20080618-E95j1vVtMtKrbpgL3gAIxPCm4ZGV9g.png"
-												}
-												alt={`Product ${index + 1}`}
-												className="w-full h-full object-cover"
-											/>
-											<button
-												type="button"
-												onClick={() => {
-													const newImages = [...field.value]
-													newImages.splice(index, 1)
-													field.onChange(newImages)
-												}}
-												className="absolute top-2 right-2 w-6 h-6 bg-white/80 rounded-full flex items-center justify-center"
-											>
-												<X className="w-4 h-4" />
-											</button>
-										</div>
-									))}
-									<label className="aspect-square bg-gray-100 rounded-lg flex items-center justify-center cursor-pointer hover:bg-gray-200 transition-colors">
-										<input
-											type="file"
-											accept="image/*"
-											className="hidden"
-											onChange={(e) => {
-												const file = e.target.files && e.target.files[0]
-												if (file) {
-													const reader = new FileReader()
-													reader.onloadend = () => {
-														field.onChange([...field.value, reader.result])
-													}
-													reader.readAsDataURL(file)
-												}
-											}}
-										/>
-										<Plus className="w-6 h-6 text-gray-400" />
-									</label>
-								</div>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
+					<FileUpload defaultMedias={form.images} onChange={() => {}} multiple={true} maxFiles={8} uploadText="Upload your media files" uploadSubtext="Images and videos up to 10MB each" />
 
 					<div className="space-y-4">
 						<FormField
@@ -210,18 +159,6 @@ export function AddProductForm({ onNext, onPrevious, brandsPromise, categoriesPr
 								<FormItem>
 									<FormLabel>Categories</FormLabel>
 									<FormControl>
-										<Select multiple value={field.value} onValueChange={field.onChange}>
-											<SelectTrigger className="w-full">
-												<SelectValue placeholder="Select a category" />
-											</SelectTrigger>
-											<SelectContent>
-												{categories.map((cat) => (
-													<SelectItem key={cat.id} value={cat.id}>
-														{cat.name}
-													</SelectItem>
-												))}
-											</SelectContent>
-										</Select>
 										<MultiSelect
 											options={categories}
 											value={field.value}

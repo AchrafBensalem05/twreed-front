@@ -13,7 +13,7 @@ const dashboardNavItems = [
 
 export default function DashboardLayout({ children }) {
 	return (
-		<div className="flex flex-col h-dvh container mx-auto">
+		<div className="flex flex-col container mx-auto">
 			{/* Navbar */}
 			<Navbar />
 
