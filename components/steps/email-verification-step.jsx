@@ -39,7 +39,7 @@ export function EmailVerificationStep() {
 		setLoading(true)
 		try {
 			await validateEmailConfirmation({ email: data.email, otp: formData.otp })
-			router.push("/")
+			router.push("/dashboard")
 		} catch (err) {
 			setError(err?.message || "Invalid code. Please try again.")
 		} finally {

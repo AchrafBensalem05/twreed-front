@@ -4,6 +4,7 @@ import { customFetch } from "@/lib/fetch"
 
 export async function uploadMedia(data) {
 	const res = customFetch("/media/upload-multiple", {
+		withAuth:true,
 		method: "POST",
 		body: data,
 	})
@@ -13,6 +14,7 @@ export async function uploadMedia(data) {
 
 export async function removeMedia({ id }) {
 	return customFetch(`/media/${id}`, {
+		withAuth:true,
 		method: "DELETE",
 	})
 }

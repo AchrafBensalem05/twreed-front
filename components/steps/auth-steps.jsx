@@ -29,7 +29,7 @@ export function AuthStep() {
       const result = await res.json()
       if (!res.ok) throw new Error(result.message || "Login failed.")
       setUser(result.user || null)
-      router.push("/") // Change to your desired route
+      router.push("/dashboard") // Change to your desired route
     } catch (err) {
       setError(err?.message || "Login failed. Please try again.")
     } finally {

@@ -6,16 +6,21 @@ import { FormProvider } from "@/contexts/form-context"
 
 export default async function ProductsPage({ searchParams }) {
 	const getProducts = async () => {
-		const params = await searchParams
-		const query = new URLSearchParams(params).toString()
-		const res = await getMyProducts({ query })
-		return res
+		try {
+			const params = await searchParams
+			const query = new URLSearchParams(params).toString()
+			const res = await getMyProducts({ query })
+			return res
+		} catch (e) {
+			return { data: [] }
+		}
 	}
 
 	const categoriesPromise = getAllCategories()
 	const brandsPromise = getAllBrands()
 
 	const { data: products } = await getProducts()
+
 
 	return (
 		<div>
